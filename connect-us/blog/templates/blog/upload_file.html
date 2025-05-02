@@ -1,0 +1,14 @@
+{% extends "blog/base.html" %}
+{% block content %}
+  <div class="container mt-4">
+    <h2>Upload File to Room: {{ room.room_id }}</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="file" name="file" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success">Upload</button>
+    </form>
+  </div>
+{% endblock %}
+

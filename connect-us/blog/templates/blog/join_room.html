@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+{% block content %}
+  <div class="container mt-4">
+    <h2>Join Room</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Room ID</label>
+        <input type="text" name="room_id" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success">Join</button>
+    </form>
+  </div>
+{% endblock %}

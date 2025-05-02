@@ -1,0 +1,217 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<style>
+    .post-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .post-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .profile-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid var(--accent-color);
+        object-fit: cover;
+    }
+
+    .author-info {
+        flex-grow: 1;
+    }
+
+    .author-name {
+        color: var(--text-color);
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .post-date {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .post-content {
+        padding: 1.5rem;
+    }
+
+    .post-title {
+        color: var(--text-color);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .post-title:hover {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    .post-excerpt {
+        color: var(--text-muted);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+    }
+
+    .file-section {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .file-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .file-name {
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .download-btn {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-shadow);
+        text-decoration: none;
+        color: white;
+    }
+
+    .pagination {
+        margin-top: 3rem;
+    }
+
+    .page-link {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        margin: 0 0.25rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .page-link:hover {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+    }
+
+    .page-item.active .page-link {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+</style>
+
+<div class="posts-container">
+    {% for post in posts %}
+    <div class="post-card">
+        <div class="post-header">
+            <div class="profile-section">
+                <img class="profile-img" src="{{ post.author.profile.image.url }}" alt="{{ post.author }}'s profile">
+                <div class="author-info">
+                    <a href="{% url 'user-posts' post.author.username %}" class="author-name">{{ post.author }}</a>
+                    <div class="post-date">{{ post.date_upload|date:"F d, Y" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-content">
+            <a href="{% url 'post-detail' post.id %}" class="post-title">{{ post.title }}</a>
+            <p class="post-excerpt">{{ post.content|truncatechars:200 }}</p>
+
+            {% if post.file %}
+            <div class="file-section">
+                <div class="file-info">
+                    <span class="file-name">
+                        <i class="fas fa-file-alt"></i>
+                        {{ post.file }}
+                    </span>
+                    <a href="{{ post.file.url }}" download class="download-btn">
+                        <i class="fas fa-download mr-2"></i>Download
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                    <i class="fas fa-angle-left"></i>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock content %}

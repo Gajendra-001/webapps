@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartoon & Anime Images</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Cartoon & Anime Hub</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search cartoons or anime...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="categories">
+            <button class="category-btn active" data-category="cartoon">Cartoons</button>
+            <button class="category-btn" data-category="anime">Anime</button>
+        </div>
+        
+        <div class="gallery" id="gallery">
+            <!-- Images will be loaded here dynamically -->
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cartoon & Anime Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

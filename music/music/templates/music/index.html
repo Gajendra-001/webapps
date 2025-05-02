@@ -1,0 +1,352 @@
+{% extends 'music/base.html' %}
+
+{% block extra_css %}
+<style>
+  /* Modern Color Palette and Variables */
+  :root {
+    --primary-color: #7c3aed;
+    --secondary-color: #4f46e5;
+    --accent-color: #f472b6;
+    --background-dark: #1e1b4b;
+    --background-light: #312e81;
+    --text-light: #f3f4f6;
+    --text-muted: #9ca3af;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+  }
+
+  /* Base Styles */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--background-dark), var(--background-light));
+    color: var(--text-light);
+    min-height: 100vh;
+  }
+
+  /* Navbar Styles */
+  .navbar {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+  }
+
+  .navbar-brand {
+    color: var(--text-light);
+    font-weight: 600; 
+    font-size: 1.5rem;
+  }
+
+  .navbar-brand i {
+    color: var(--accent-color);
+  }
+
+  /* Main Container */
+  .main-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px var(--shadow-color);
+  }
+
+  /* Headings */
+  .main-container h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  /* Mood Input Section */
+  .mood-input-group {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mood-input-group label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+  .mood-input-group input {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .mood-input-group input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-color);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Mood Tags */
+  .mood-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+
+  .mood-tag-btn {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+
+  .mood-tag-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+  }
+
+  /* Submit Button */
+  .mood-submit-btn {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .mood-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+  }
+
+  /* Recommended Section */
+  .recommended-section {
+    margin-top: 4rem;
+  }
+
+  .recommended-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--accent-color);
+  }
+
+  /* Song Cards */
+  .song-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .song-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-color);
+  }
+
+  .song-card h5 {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+  }
+
+  .song-card p {
+    margin: 0.5rem 0;
+    color: var(--text-muted);
+  }
+
+  /* Audio Player */
+  .audio-player {
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Footer */
+  .footer {
+    color: var(--text-muted);
+    padding: 2rem 0;
+  }
+
+  .footer i {
+    color: var(--accent-color);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .main-container {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+
+    .main-container h1 {
+      font-size: 2.5rem;
+    }
+
+    .mood-input-group {
+      padding: 1.5rem;
+    }
+
+    .mood-tag-btn {
+      padding: 0.5rem 1rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  <!-- Project Title -->
+  <h1>Find Your Rhythm</h1>
+  <p class="subtitle">Let your mood guide you to the perfect melody</p>
+  
+  <!-- Mood Input Form -->
+  <form id="mood-form" method="post">
+    {% csrf_token %}
+    
+    <!-- Input Group -->
+    <div class="mood-input-group">
+      <label for="id_mood_input">
+        <i class="fas fa-heart"></i> How are you feeling today?
+      </label>
+      {{ form.mood_input }}
+    </div>
+
+    <!-- Mood Tag Buttons -->
+    <div class="mood-tags">
+      <button type="button" class="mood-tag-btn" data-mood="Happy 😊">Happy 😊</button>
+      <button type="button" class="mood-tag-btn" data-mood="Relaxed 🌿">Relaxed 🌿</button>
+      <button type="button" class="mood-tag-btn" data-mood="Sad 🥀">Sad 🥀</button>
+      <button type="button" class="mood-tag-btn" data-mood="Romantic ❤️">Romantic ❤️</button>
+      <button type="button" class="mood-tag-btn" data-mood="Workout 💪">Workout 💪</button>
+      <button type="button" class="mood-tag-btn" data-mood="Motivational 🔥">Motivational 🔥</button>
+      <button type="button" class="mood-tag-btn" data-mood="Party 🎉">Party 🎉</button>
+      <button type="button" class="mood-tag-btn" data-mood="Energetic ⚡">Energetic ⚡</button>
+      <button type="button" class="mood-tag-btn" data-mood="More">More <i class="fas fa-ellipsis-h"></i></button>
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <button type="submit" class="mood-submit-btn">
+        <i class="fas fa-search"></i> Find Your Perfect Soundtrack
+      </button>
+    </div>
+  </form>
+
+  <!-- Recommended Tracks -->
+  <div class="recommended-section">
+    <h2><i class="fas fa-headphones-alt"></i> Your Playlist</h2>
+    <div id="recommendations">
+      <!-- Song cards will be injected here via AJAX -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Handle Mood Tag Clicks
+  document.querySelectorAll('.mood-tag-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      // Add animation effect
+      btn.style.transform = 'scale(0.95)';
+      setTimeout(() => btn.style.transform = 'translateY(-2px)', 150);
+      
+      // Set the form's mood_input field
+      const mood = btn.getAttribute('data-mood');
+      document.getElementById('id_mood_input').value = mood;
+    });
+  });
+
+  // AJAX Submission
+  $(document).ready(function() {
+    $('#mood-form').submit(function(e) {
+      e.preventDefault();
+      
+      // Add loading state
+      const submitBtn = $(this).find('button[type="submit"]');
+      const originalText = submitBtn.html();
+      submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Finding songs...');
+      submitBtn.prop('disabled', true);
+
+      $.ajax({
+        url: "{% url 'recommend_songs' %}",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(response) {
+          var recDiv = $('#recommendations');
+          recDiv.empty();
+          
+          if(response.songs.length > 0) {
+            response.songs.forEach(function(song, index) {
+              var songHtml = `
+                <div class="song-card" style="animation: fadeIn ${0.3 + index * 0.1}s ease-out forwards">
+                  <h5><i class="fas fa-music"></i> ${song.title} - ${song.artist}</h5>
+                  <p><i class="fas fa-album-collection"></i> <strong>Album:</strong> ${song.album}</p>
+                  <p><i class="fas fa-tags"></i> <strong>Mood Tags:</strong> ${song.mood_tags}</p>
+                  ${song.lyrics ? `<p><i class="fas fa-quote-left"></i> ${song.lyrics.substring(0, 150)}...</p>` : ''}
+                  ${song.audio_url ? `
+                    <audio class="audio-player" controls>
+                      <source src="${song.audio_url}" type="audio/mpeg">
+                      Your browser does not support the audio element.
+                    </audio>
+                  ` : ''}
+                </div>
+              `;
+              recDiv.append(songHtml);
+            });
+          } else {
+            recDiv.html('<div class="song-card text-center"><p>No recommendations found. Try a different mood.</p></div>');
+          }
+        },
+        error: function(xhr, status, error) {
+          $('#recommendations').html('<div class="song-card text-center"><p class="text-danger"><i class="fas fa-exclamation-circle"></i> An error occurred. Please try again.</p></div>');
+        },
+        complete: function() {
+          // Restore button state
+          submitBtn.html(originalText);
+          submitBtn.prop('disabled', false);
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

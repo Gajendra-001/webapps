@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" class="delete-confirmation">
+        {% csrf_token %}
+        <div class="text-center">
+            <i class="fas fa-exclamation-triangle text-warning mb-4" style="font-size: 3rem;"></i>
+            <h2 class="mb-4">Delete Post</h2>
+            <p class="lead mb-4">Are you sure you want to delete "{{ object.title }}"?</p>
+            <div class="button-group">
+                <button class="btn btn-danger mr-3" type="submit">
+                    <i class="fas fa-trash-alt mr-2"></i>Delete
+                </button>
+                <a class="btn btn-secondary" href="{% url 'post-detail' object.id %}">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

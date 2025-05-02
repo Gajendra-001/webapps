@@ -1,0 +1,156 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    .profile-container {
+        background: var(--card-bg);
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--card-shadow);
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .profile-header {
+        padding: 2rem;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        background: linear-gradient(45deg, rgba(37, 99, 235, 0.1), rgba(6, 182, 212, 0.1));
+    }
+
+    .profile-image-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--accent-color);
+        transition: transform 0.3s ease;
+    }
+
+    .profile-image:hover {
+        transform: scale(1.05);
+    }
+
+    .profile-username {
+        font-size: 1.8rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .profile-email {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+    }
+
+    .profile-content {
+        padding: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        animation: slideUp 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid var(--border-color) !important;
+        color: var(--text-color) !important;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: var(--accent-color) !important;
+        box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2) !important;
+    }
+
+    .update-btn {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+        animation: fadeIn 0.5s ease-out 0.4s forwards;
+        opacity: 0;
+    }
+
+    .update-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Form label colors */
+    label {
+        color: var(--text-color) !important;
+        font-weight: 500;
+    }
+
+    /* Help text styling */
+    .help-text {
+        color: var(--text-muted) !important;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-image-container">
+            <img class="profile-image" src="{{ user.profile.image.url }}">
+        </div>
+        <h2 class="profile-username">{{ user.username }}</h2>
+        <p class="profile-email">{{ user.email }}</p>
+    </div>
+    
+    <div class="profile-content">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ u_form|crispy }}
+                </div>
+                <div class="col-md-6">
+                    {{ p_form|crispy }}
+                </div>
+            </div>
+            <button type="submit" class="update-btn btn btn-primary">
+                <i class="fas fa-user-edit mr-2"></i>Update Profile
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

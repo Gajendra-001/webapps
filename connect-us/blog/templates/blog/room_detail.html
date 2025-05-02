@@ -1,0 +1,83 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Room: {{ room.room_id }}</h2>
+    <a href="{% url 'upload-file' room.room_id %}" class="btn btn-primary mb-3">Upload File</a>
+
+    <h4>Files Shared:</h4>
+    {% if files %}
+      <ul class="list-group">
+        {% for file in files %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ file.file.name|cut:"Files/" }}
+            <a href="{{ file.file.url }}" download class="btn btn-sm btn-outline-secondary">Download</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No files uploaded yet.</p>
+    {% endif %}
+
+    <!-- Chat Section -->
+    <h4>Chat Messages:</h4>
+    <div id="chat-messages" class="mb-3">
+      {% for message in messages %}
+        <p><strong>{{ message.sender.username }}:</strong> {{ message.content }}</p>
+      {% endfor %}
+    </div>
+
+    <!-- Send Message Form -->
+    <form method="POST" id="send-message-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <textarea name="content" class="form-control" rows="3" placeholder="Type your message here..." required id="message-input"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+  </div>
+
+  <!-- JavaScript to handle AJAX and message overflow -->
+  <script>
+    const form = document.getElementById('send-message-form');
+    const messageInput = document.getElementById('message-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();  // Prevent form submission
+
+      const messageContent = messageInput.value;
+      if (messageContent.trim() === "") return;  // Ignore empty messages
+
+      // Send message via AJAX
+      fetch("{% url 'send-message' room.room_id %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({
+          content: messageContent
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Append new message to the chat
+        const newMessage = document.createElement('p');
+        newMessage.innerHTML = `<strong>${data.user}:</strong> ${data.message}`;
+        chatMessages.appendChild(newMessage);
+
+        // Clear the input field
+        messageInput.value = '';
+
+        // Scroll to the latest message
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      })
+      .catch(error => console.error('Error sending message:', error));
+    });
+
+    // Auto-scroll to the bottom of the chat messages when new ones are added
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  </script>
+
+{% endblock %}

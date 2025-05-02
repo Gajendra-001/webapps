@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: connectus-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn django_web_app.wsgi:application

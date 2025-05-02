@@ -1,0 +1,273 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="{% static 'blog/main.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #3b82f6;
+        --accent-color: #06b6d4;
+        --background-color: #0f172a;
+        --card-bg: #1e293b;
+        --text-color: #e2e8f0;
+        --text-muted: #94a3b8;
+        --navbar-bg: #1e293b;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        --hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        --border-color: #334155;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .navbar {
+        background: var(--navbar-bg) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem 2rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-link {
+        color: var(--text-color) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--accent-color) !important;
+      }
+
+      .btn {
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        font-weight: 500;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-shadow);
+        background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+      }
+
+      #searchform {
+        display: flex;
+        align-items: center;
+      }
+
+      #searchform input {
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-color);
+        width: 250px;
+        transition: all 0.3s ease;
+      }
+
+      #searchform input:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+        outline: none;
+      }
+
+      #searchform input::placeholder {
+        color: var(--text-muted);
+      }
+
+      #searchform button {
+        border-radius: 12px;
+        background: var(--accent-color);
+        padding: 0.75rem 1.5rem;
+        margin-left: 0.5rem;
+      }
+
+      .container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .alert {
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        padding: 1rem 1.5rem;
+        border: 1px solid transparent;
+        background: var(--card-bg);
+        color: var(--text-color);
+      }
+
+      .content-section {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--card-shadow);
+      }
+
+      .article-img {
+        width: 65px;
+        height: 65px;
+        object-fit: cover;
+        border: 2px solid var(--accent-color);
+        border-radius: 50%;
+      }
+
+      .article-metadata {
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-muted);
+      }
+
+      .article-title {
+        color: var(--text-color);
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .article-title:hover {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
+
+      .article-content {
+        color: var(--text-muted);
+        line-height: 1.8;
+      }
+
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--background-color);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-color);
+      }
+    </style>
+
+    {% if title %}
+        <title>ConnectUs-Gaurav {{title}}</title>
+    {% else %}
+        <title>ConnectUs-Gaurav</title>
+    {% endif %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="{% url 'blog-home' %}">
+        <i class="fas fa-file"></i> Connect-Us
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'blog-home' %}">
+              <i class="fas fa-home"></i> Home <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn text-white m-2" href="{% url 'create-room' %}">
+                <i class="fas fa-plus-circle"></i> Create Room
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn text-white m-2" href="{% url 'join-room' %}">
+                <i class="fas fa-door-open"></i> Join Room
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn text-white m-2" href="{% url 'your-rooms' %}">
+                <i class="fas fa-folder-open"></i> Your Rooms
+            </a>
+        </li>
+        
+          
+        </ul>
+        
+        <form id="searchform" action="{% url 'search' %}" method="get">
+          <input type="text" name="q" placeholder="Search Here..." value="{{ request.GET.q }}">
+          <button type="button" onclick="searchform.submit()" class="text-white">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+        
+        {% if user.is_authenticated %}
+          <a href="{% url 'user-posts' user %}" class="btn text-white m-2">
+            <i class="fas fa-user-shield"></i> My Post
+          </a>
+          <a href="{% url 'post-create' %}" class="btn text-white m-2">
+            <i class="fas fa-user-edit"></i> New Post
+          </a>
+          <a href="{% url 'profile' %}" class="btn text-white m-2">
+            <i class="fas fa-user"></i> {{ user.username }}
+          </a>
+          <a href="{% url 'logout' %}" class="btn text-white m-2">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn text-white m-2">
+            <i class="fas fa-user-tie"></i> Log In
+          </a>
+          <a href="{% url 'register' %}" class="btn text-white m-2">
+            <i class="fas fa-sign-in-alt"></i> Sign Up
+          </a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="container">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'blog/main.js' %}"></script>
+  </body>
+</html>
